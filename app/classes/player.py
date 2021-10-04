@@ -4,19 +4,26 @@ from utils import COLORS, SCREEN_WIDTH, SCREEN_HEIGHT
 
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, nome: str, pos_x: int, pos_y: int, speed: int, image: str):
+    def __init__(self, name: str = None, pos_x: int = SCREEN_WIDTH/2, pos_y: int = SCREEN_HEIGHT, speed: int = 10, image: str = None):
+        '''
+        :param name str: just a name you want your character to have (not important), default=None:
+        :param pos_x int: the x position the object will appear on the screen, default=SCREEN_WIDTH/2:
+        :param pos_y int: the y position the object will appear on the screen, default=SCREEN_HEIGHT:
+        :param speed int: the speed in pixel that the object will move:
+        :param image str: the path to a image:
+        '''
         pygame.sprite.Sprite.__init__(self)
         self.image_path = image
         self.image = pygame.image.load(self.image_path)
         self.rect = self.image.get_rect()
         self.rect.center = (pos_x, pos_y)
-        self.nome = nome
+        self.name = name
         self.speed = speed
         self.flip = False
 
     def update(self, screen):
         '''
-        :param class screen: pygame.Surface variable defined at the main function with pygame.display.set_mode().
+        :param screen class: pygame.Surface class variable defined at the main function with pygame.display.set_mode().
         '''
         screen.blit(self.image, self.rect)
 

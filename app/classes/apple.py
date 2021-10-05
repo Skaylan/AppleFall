@@ -32,7 +32,3 @@ class Apple(pygame.sprite.Sprite):
             self.rect.right = SCREEN_WIDTH
         if self.rect.left <= 0:
             self.rect.left = 0
-
-        if self.rect.top >= SCREEN_HEIGHT:
-            self.rect.top = 0
-            self.rect.center = (random.randint(0, SCREEN_WIDTH - 10), 0)

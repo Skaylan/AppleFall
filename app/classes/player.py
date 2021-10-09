@@ -4,7 +4,7 @@ from utils import COLORS, SCREEN_WIDTH, SCREEN_HEIGHT
 
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, name: str = None, pos_x: int = SCREEN_WIDTH/2, pos_y: int = SCREEN_HEIGHT, speed: int = 10, image: str = None):
+    def __init__(self, name: str = None, pos_x: int = SCREEN_WIDTH/2, pos_y: int = SCREEN_HEIGHT, speed: int = 10, life: int = 5, image: str = None):
         '''
         :param name str: just a name you want your character to have (not important), default=None:
         :param pos_x int: the x position the object will appear on the screen, default=SCREEN_WIDTH/2:
@@ -20,6 +20,7 @@ class Player(pygame.sprite.Sprite):
         self.name = name
         self.speed = speed
         self.flip = False
+        self.life = life
 
     def update(self, screen):
         '''

@@ -8,4 +8,5 @@ ROTTEN_APPLE_IMAGE = 'assets/images/rottenapple.png'
 APPLE_IMAGE = 'assets/images/apple.png'
 GOLD_APPLE_IMAGE = 'assets/images/goldapple.png'
 BACKGROUND_IMAGE = pygame.image.load('assets/images/doubletree.png')
+START_BUTTON_IMG = 'assets/images/startbutton.png'
 missed_apples = 0

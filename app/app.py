@@ -2,7 +2,9 @@ import pygame, sys, random
 from pygame.locals import *
 from classes.player import Player
 from classes.apple import Apple
-from utils import COLORS, SCREEN_WIDTH, SCREEN_HEIGHT, BACKGROUND_IMAGE, PLAYER_IMAGE, ROTTEN_APPLE_IMAGE, APPLE_IMAGE, GOLD_APPLE_IMAGE
+from classes.button import Button
+from utils import COLORS, SCREEN_WIDTH, SCREEN_HEIGHT, BACKGROUND_IMAGE, PLAYER_IMAGE
+from utils import START_BUTTON_IMG, ROTTEN_APPLE_IMAGE, APPLE_IMAGE, GOLD_APPLE_IMAGE
 
 
 def main():
@@ -14,19 +16,18 @@ def main():
     myfont = pygame.font.SysFont("monospace", 26)
     global score
     score = 0
-    life = 5
     global missed_apples
     missed_apples = 0
     #PLAYER
     player_sprites = pygame.sprite.Group()
     global player
-    player = Player('Lucas', SCREEN_WIDTH/2, 600, 10, PLAYER_IMAGE)
+    player = Player(pos_x=SCREEN_WIDTH/2, pos_y=600, speed=10, image=PLAYER_IMAGE)
     player_sprites.add(player)
 
     #GOOD APPLE
     good_apple_sprites = pygame.sprite.Group()
 
-    good_apple = Apple(image=APPLE_IMAGE,speed=5)
+    good_apple = Apple(image=APPLE_IMAGE, speed=5)
     good_apple_sprites.add(good_apple)
 
     #ROTTEN APPLE
@@ -40,6 +41,7 @@ def main():
     gold_apple_sprites = pygame.sprite.Group()
     gold_apple = Apple(image=GOLD_APPLE_IMAGE)
     gold_apple_sprites.add(gold_apple)
+    
 
     while True:
         for event in pygame.event.get():
@@ -59,12 +61,12 @@ def main():
 
         for hit in rotten_apple_hit:
             rotten_apple.rect.center = random.randint(0, SCREEN_WIDTH), 0
-            life -= 1
+            player.life -= 1
 
         gold_apple_hit = pygame.sprite.spritecollide(player, gold_apple_sprites, False)
         
         for _ in gold_apple_hit:
-            life += 1
+            player.life += 1
             gold_apple.kill()
             gold_apple.rect.center = -10, -10
             score += 1
@@ -94,16 +96,16 @@ def main():
         if score == 300:
             gold_apple.update(screen)
 
-        if life <= 0:
+        if player.life <= 0:
             game_over()
 
         good_apple.update(screen)
 
-        if life >= 3:
-            lifes_label = myfont.render(f'{life}', 1, (0, 255, 0))
+        if player.life >= 3:
+            lifes_label = myfont.render(f'{player.life}', 1, (0, 255, 0))
             screen.blit(lifes_label, (5, 3))
-        if life < 3:
-            lifes_label = myfont.render(f'{life}', 1, (255, 0, 0))
+        if player.life < 3:
+            lifes_label = myfont.render(f'{player.life}', 1, (255, 0, 0))
             screen.blit(lifes_label, (5, 3))
 
         if good_apple.rect.top >= SCREEN_HEIGHT:
@@ -123,6 +125,33 @@ def main():
         point_label = myfont.render(f'{score}', 1, (0,0,255))
         screen.blit(point_label, (SCREEN_WIDTH - 50, 0))
         pygame.display.flip()
+
+
+def menu():
+    pygame.init()
+    screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+    fps = pygame.time.Clock()
+
+    #BUTTONS SECTION
+    start_button = Button(image=START_BUTTON_IMG, pos_x=100, pos_y=100, scale=2)
+    # exit_button = Button()
+
+    while True:
+
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                pygame.quit()
+                sys.exit()
+            
+            if start_button.action():
+                main()
+                break
+        
+        fps.tick(60)
+        screen.fill(COLORS['WHITE'])
+        start_button.update(screen)
+        pygame.display.flip()
+
 
 def game_over():
     pygame.init()
@@ -149,4 +178,4 @@ def game_over():
         pygame.display.flip()
 
 if __name__ == '__main__':
-    main()
+    menu()
